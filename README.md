@@ -38,11 +38,56 @@ The maximum possible groupings of adjacent ones are already shown in the figure.
 
 **PROGRAM**
 
-/* Program for flipflops and verify its truth table in quartus using Verilog programming. Developed by: RegisterNumber:
-*/
+/* Program for flipflops and verify its truth table in quartus using Verilog programming. Developed by: SANTHOSH V
+RegisterNumber: 24005918
+*/  SR USING CASE:
+module sr_ff (s, r, clk, rst, q);
+  input s, r, clk, rst;
+  output reg q;
+
+  always @(posedge clk or posedge rst)
+ begin
+    if (rst)
+      q <= 0; // Reset the flip-flop
+    else
+ begin
+      case ({s, r}) // S and R control the behavior
+        2'b00: q <= q;    // No change
+        2'b01: q <= 0;    // Reset
+        2'b10: q <= 1;    // Set
+        2'b11: q <= 0;    // Invalid state, typically treated as reset
+      endcase
+    end
+  end
+endmodule
+The 2'b11 state for SR flip-flops is considered invalid because it implies setting and resetting the flip-flop simultaneously, which is logically contradictory. To avoid unpredictable behavior or contention in the circuit, this state is often treated as a reset (or sometimes as a "no change" state) to ensure stability.
+
+(or)
+module sr_ff(s,r,clk,q,qbar);
+input s,r,clk;
+output reg q;
+output reg qbar;
+initial 
+begin
+q=0;
+qbar=1;
+end
+always @(posedge clk)
+begin
+   q=s|(~r&q);
+   qbar=r|(~s&~q);
+end
+endmodule
+
+
+
 
 **RTL LOGIC FOR FLIPFLOPS**
+   ![{2BEC1DE8-F71B-4456-BCF1-EC559892A1EE}](https://github.com/user-attachments/assets/f790e8de-990d-4f60-bb32-576cf4385d3b)
 
 **TIMING DIGRAMS FOR FLIP FLOPS**
+![{42B06D3E-A057-4F8D-ADC1-2205D4796554}](https://github.com/user-attachments/assets/66d6e2a2-3cea-4354-9c35-b133eeb55453)
 
 **RESULTS**
+         The observation of the simulation results and confirm the successful
+ execution of the program
